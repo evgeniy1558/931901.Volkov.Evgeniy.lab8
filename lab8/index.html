@@ -1,0 +1,74 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+    <style>
+        .item {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+    <script>
+        let items;
+
+        function addElement() {
+            let newElement = document.createElement('div');
+
+            newElement.className = 'item';
+            newElement.innerHTML = `<label><input class="name" type="text" size="18"></label>
+                <label><input class="value" type="text" size="18"></label>
+                <button type="button" onclick="up(parentNode)">&#8593;</button>
+                <button type="button" onclick="down(parentNode)">&#8595;</button>
+                <button type="button" onclick="remove(parentNode)">&#215;</button>`;
+
+            document.querySelector('.items').appendChild(newElement);
+        }
+
+        function up(currentItem) {
+            if (currentItem.previousElementSibling)
+                currentItem.parentNode.insertBefore(currentItem, currentItem.previousElementSibling);
+        }
+
+        function down(currentItem) {
+            if (currentItem.nextElementSibling)
+                currentItem.parentNode.insertBefore(currentItem.nextElementSibling, currentItem);
+        }
+
+        function remove(currentItem) {
+            currentItem.remove();
+        }
+
+        function save() {
+            let object = {};
+            items = document.querySelectorAll('.item');
+
+            for (let i = 0; i < items.length; i += 1) {
+                let name = items[i].querySelector(".name").value;
+                object[name] = items[i].querySelector(".value").value;
+            }
+
+            document.querySelector('#forResult').innerHTML = JSON.stringify(object);
+        }
+    </script>
+</head>
+<body>
+<form id='form' name="form">
+    <div class="items">
+        <div class="item">
+            <label><input class="name" type="text" size="18"></label>
+            <label><input class="value" type="text" size="18"></label>
+            <button type="button" onclick="up(parentNode)">&#8593;</button>
+            <button type="button" onclick="down(parentNode)">&#8595;</button>
+            <button type="button" onclick="remove(parentNode)">&#215;</button>
+        </div>
+    </div>
+    <button type="button" onclick="addElement()">Добавить элемент</button>
+    <br>
+    <button type="button" onclick="save()">Сохранить</button>
+    <p id="forResult"></p>
+</form>
+</body>
+</html>
